@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoinMarketCap</title>
+</head>
+<body>
+    <header class="jumbotron blue"><h4><b>Coin CoinMarketCap</b></h4></header>
+    <div id="coins"></div>
+    <script src="api-key.js"></script>
+
+
+    <script type="text/javascript">
+    //my api key
+        var apikey = {
+            key: 'ec85d10a-ece6-4ae8-8621-140cb83bd075'
+        }
+    //GET Fetch Requisição
+        fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' +
+            apikey.key)
+            .then((response)=> {
+                if(!response.ok) throw new Error('Erro ao executar a requisição, status ' + response.status);
+                return response.json();
+            })
+            .then((api)=>{
+                var texto = "";
+                //Get 10 coins ans symbols
+                for(let i = 0; i < 10; i++){
+
+                    //Show API Information
+
+                    texto = texto + `
+                    <div class="media">
+                        <img src="coin.jpg" class="align-self-center mr-3" alt="coin" width="100" heigth="60">
+                        <div class="media-body">
+                            <h5 class="mt-2">${api.data[i].name}</h5>
+                            <p>${api.data[i].symbol}</p>
+                            <p style="margin-top: -17px;">${api.data[i].first_historical_data}</p>
+                            </div>
+                    </div>
+                    `;
+                    document.getElementById("coins").innerHTML = texto;
+                }
+            })
+            .catch((error)=>{
+                console.error(error.message);
+            });
+
+    </script>
+</body>
+</html>
